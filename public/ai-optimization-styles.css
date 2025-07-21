@@ -1,0 +1,675 @@
+/* Styles Optimisation IA - Design Ultra Moderne */
+
+/* Variables spécifiques à l'optimisation IA */
+:root {
+  --ai-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --brain-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --analysis-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --recommendation-gradient: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  --priority-high: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  --priority-medium: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  --priority-low: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+}
+
+/* Écran principal d'optimisation IA */
+#screen-ai-optimization {
+  background: var(--bg-primary);
+}
+
+#screen-ai-optimization .header {
+  background: var(--ai-gradient);
+  color: white;
+}
+
+#screen-ai-optimization .content {
+  padding: var(--spacing-xl);
+  flex: 1;
+  background: var(--bg-primary);
+}
+
+/* Container de progression IA avec design futuriste */
+.ai-progress-container {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  margin: var(--spacing-xl) 0;
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-progress-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--ai-gradient);
+  animation: shimmer 2s infinite;
+}
+
+.ai-progress-container h3 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: var(--spacing-xl);
+  background: var(--ai-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+.ai-progress-container h3::before {
+  content: '🤖';
+  font-size: 32px;
+}
+
+/* Barre de progression moderne */
+.progress-bar-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto var(--spacing-xl);
+  background: var(--bg-primary);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  height: 16px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+  height: 100%;
+  background: var(--ai-gradient);
+  border-radius: var(--radius-xl);
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: progressShimmer 1.5s infinite;
+}
+
+.progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  z-index: 1;
+}
+
+.progress-message {
+  color: var(--text-secondary);
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: var(--spacing-md);
+  animation: pulse 2s infinite;
+}
+
+/* Container des résultats IA */
+.ai-results-container {
+  margin-top: var(--spacing-xl);
+  animation: slideInUp 0.8s ease;
+}
+
+.ai-results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2xl);
+}
+
+/* Sections d'analyse avec design moderne */
+.ai-section {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.ai-section:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.ai-section h3 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: var(--spacing-xl);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  position: relative;
+}
+
+.ai-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--ai-gradient);
+  border-radius: 2px;
+}
+
+/* Boîtes de diagnostic avec gradients */
+.diagnostic-box {
+  background: linear-gradient(135deg, rgba(116, 185, 255, 0.1) 0%, rgba(9, 132, 227, 0.1) 100%);
+  border: 1px solid rgba(116, 185, 255, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  margin: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.diagnostic-box::before {
+  content: '🔍';
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  font-size: 24px;
+}
+
+.diagnostic-box h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  background: var(--analysis-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.diagnostic-box p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 500;
+}
+
+/* Boîtes d'opportunités */
+.opportunities-box {
+  background: linear-gradient(135deg, rgba(67, 233, 123, 0.1) 0%, rgba(56, 249, 215, 0.1) 100%);
+  border: 1px solid rgba(67, 233, 123, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  margin: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.opportunities-box::before {
+  content: '💡';
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  font-size: 24px;
+}
+
+.opportunities-box h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  background: var(--recommendation-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.opportunities-box ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.opportunities-box li {
+  padding: var(--spacing-md) 0;
+  padding-left: var(--spacing-xl);
+  position: relative;
+  color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.opportunities-box li::before {
+  content: '✨';
+  position: absolute;
+  left: 0;
+  top: var(--spacing-md);
+  font-size: 16px;
+}
+
+/* Boîtes de stratégie */
+.strategy-box {
+  background: linear-gradient(135deg, rgba(240, 147, 251, 0.1) 0%, rgba(245, 87, 108, 0.1) 100%);
+  border: 1px solid rgba(240, 147, 251, 0.2);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  margin: var(--spacing-lg) 0;
+  position: relative;
+}
+
+.strategy-box::before {
+  content: '🎯';
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  font-size: 24px;
+}
+
+.strategy-box h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  background: var(--brain-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.strategy-box p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 500;
+  margin-bottom: var(--spacing-md);
+}
+
+/* Table des mots-clés alternatifs */
+.keywords-table {
+  margin: var(--spacing-xl) 0;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-light);
+}
+
+.keywords-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+}
+
+.keywords-table th {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  padding: var(--spacing-lg);
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid var(--border-light);
+  color: var(--text-primary);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.keywords-table td {
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--border-light);
+  transition: all 0.3s ease;
+}
+
+.keywords-table tr:hover {
+  background: rgba(102, 126, 234, 0.05);
+  transform: scale(1.01);
+}
+
+.keywords-table strong {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Cards de recommandations avec priorités */
+.recommendation-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  margin: var(--spacing-lg) 0;
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-xl);
+}
+
+.recommendation-card.priority-high {
+  border-color: #fa709a;
+  background: linear-gradient(135deg, rgba(250, 112, 154, 0.05) 0%, rgba(254, 225, 64, 0.05) 100%);
+}
+
+.recommendation-card.priority-medium {
+  border-color: #a8edea;
+  background: linear-gradient(135deg, rgba(168, 237, 234, 0.05) 0%, rgba(254, 214, 227, 0.05) 100%);
+}
+
+.recommendation-card.priority-low {
+  border-color: #d299c2;
+  background: linear-gradient(135deg, rgba(210, 153, 194, 0.05) 0%, rgba(254, 249, 215, 0.05) 100%);
+}
+
+.rec-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-lg);
+  gap: var(--spacing-md);
+}
+
+.rec-header h4 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.priority-badge {
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-xl);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: white;
+  flex-shrink: 0;
+}
+
+.priority-badge.high {
+  background: var(--priority-high);
+}
+
+.priority-badge.medium {
+  background: var(--priority-medium);
+  color: var(--text-primary);
+}
+
+.priority-badge.low {
+  background: var(--priority-low);
+  color: var(--text-primary);
+}
+
+.rec-description {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--spacing-lg);
+  font-weight: 500;
+}
+
+.rec-actions {
+  margin: var(--spacing-lg) 0;
+}
+
+.rec-actions h5 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+}
+
+.rec-actions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.rec-actions li {
+  padding: var(--spacing-sm) 0;
+  padding-left: var(--spacing-xl);
+  position: relative;
+  color: var(--text-secondary);
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.rec-actions li i {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4facfe;
+  font-size: 14px;
+}
+
+.rec-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-light);
+  gap: var(--spacing-md);
+}
+
+.budget {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-primary);
+  border-radius: var(--radius-md);
+}
+
+.budget i {
+  color: #4facfe;
+}
+
+.results {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  text-align: right;
+  flex: 1;
+}
+
+/* Boîte de conclusion */
+.conclusion-box {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  margin-top: var(--spacing-2xl);
+  position: relative;
+}
+
+.conclusion-box::before {
+  content: '🎉';
+  position: absolute;
+  top: var(--spacing-lg);
+  right: var(--spacing-lg);
+  font-size: 24px;
+}
+
+.conclusion-box h4 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: var(--spacing-lg);
+  background: var(--ai-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.conclusion-box p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/* Actions finales */
+.ai-actions {
+  display: none;
+  gap: var(--spacing-lg);
+  justify-content: center;
+  margin-top: var(--spacing-2xl);
+  padding: var(--spacing-lg);
+}
+
+.ai-actions.show {
+  display: flex;
+}
+
+.ai-actions .btn-primary {
+  background: var(--ai-gradient);
+}
+
+.ai-actions .btn-secondary {
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--border-light);
+}
+
+/* Animations personnalisées */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes progressShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .rec-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .rec-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+  
+  .results {
+    text-align: left;
+  }
+  
+  .ai-actions {
+    flex-direction: column;
+  }
+  
+  .keywords-table {
+    font-size: 14px;
+    overflow-x: auto;
+  }
+  
+  .keywords-table th,
+  .keywords-table td {
+    padding: var(--spacing-md);
+    min-width: 100px;
+  }
+}
+
+/* États de focus améliorés */
+.recommendation-card:focus-within {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Micro-interactions */
+.recommendation-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  background: var(--ai-gradient);
+  transition: height 0.3s ease;
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.recommendation-card:hover::before {
+  height: 4px;
+}
+
+/* Effets de glassmorphism avancés */
+.ai-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  pointer-events: none;
+  border-radius: var(--radius-xl);
+}
+
+/* Indicateurs visuels pour les priorités */
+.recommendation-card.priority-high::after {
+  content: '🔥';
+  position: absolute;
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+  font-size: 20px;
+}
+
+.recommendation-card.priority-medium::after {
+  content: '⚡';
+  position: absolute;
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+  font-size: 20px;
+}
+
+.recommendation-card.priority-low::after {
+  content: '💎';
+  position: absolute;
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+  font-size: 20px;
+}
