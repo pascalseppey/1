@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scrapi - Web Scraping & AI Enrichment</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="portrait-styles.css">
+    <link rel="stylesheet" href="keyword-styles.css"></head>
+<body>
+    <div class="container">
+        <!-- Écran 1: Accueil -->
+        <div id="screen-home" class="screen active">
+            <div class="logo">
+                <h1>🕸️ <span data-i18n="app.name">Scrapi</span></h1>
+                <p data-i18n="app.tagline">Extraction intelligente de données web</p>
+            </div>
+            <div class="content">
+                <h2 data-i18n="screens.home.title">Bienvenue sur Scrapi</h2>
+                <p data-i18n="screens.home.subtitle">Analysez et enrichissez les données de n'importe quel site web avec l'IA</p>
+                <button class="btn-primary" onclick="goToScreen('screen-url')" data-i18n="screens.home.buttons.start">
+                    Démarrer le scraping
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran 2: Saisie URL -->
+        <div id="screen-url" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-home')">← <span data-i18n="screens.url.buttons.back">Retour</span></button>
+                <h2 data-i18n="screens.url.title">Entrez l'URL du site</h2>
+            </div>
+            <div class="content">
+                <input type="url" id="urlInput" placeholder="https://exemple.com" value="https://" data-i18n-placeholder="screens.url.placeholder">
+                <label class="checkbox">
+                    <input type="checkbox" id="downloadImages" checked>
+                    <span data-i18n="screens.url.options.downloadImages">Télécharger les images</span>
+                </label>
+                <button class="btn-primary" onclick="analyzeWebsite()" data-i18n="screens.url.buttons.next">
+                    Suivant
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran 3: Info & Arborescence -->
+        <div id="screen-info" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-url')">← <span data-i18n="screens.analysis.buttons.back">Retour</span></button>
+                <h2 data-i18n="screens.analysis.title">Analyse du site</h2>
+            </div>
+            <div class="content">
+                <!-- Jauge de progression pour l'analyse -->
+                <div id="analyzeProgressContainer" class="progress-container" style="display: none;">
+                    <canvas id="analyzeProgressCanvas" width="200" height="200"></canvas>
+                    <div class="progress-text">
+                        <span id="analyzeProgressPercent">0%</span>
+                    </div>
+                </div>
+                <div id="analyzeStatus" class="analyze-status" style="display: none;">
+                    <p id="analyzeMessage" data-i18n="screens.analysis.status.starting">Analyse en cours...</p>
+                    <p id="analyzeDetails" class="analyze-details"></p>
+                </div>
+                
+                <div id="siteInfo" class="info-box">
+                    <p data-i18n="screens.analysis.status.checking">Vérification du site...</p>
+                </div>
+                <div id="siteTree" class="tree-box"></div>
+                <button class="btn-primary" onclick="startScraping()" data-i18n="screens.analysis.buttons.download">
+                    Télécharger les pages
+                </button>
+                <button class="btn-secondary" onclick="searchFiches()" data-i18n="screens.analysis.buttons.searchCards">
+                    Rechercher des fiches
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran 4: Progression -->
+        <div id="screen-progress" class="screen">
+            <div class="header">
+                <h2 data-i18n="screens.progress.title">Téléchargement en cours</h2>
+            </div>
+            <div class="content">
+                <div class="progress-container">
+                    <canvas id="progressCanvas" width="200" height="200"></canvas>
+                    <div class="progress-text">
+                        <span id="progressPercent">0%</span>
+                    </div>
+                </div>
+                <div id="logs" class="logs-container"></div>
+            </div>
+        </div>
+
+        <!-- Écran 5: Résultats -->
+        <div id="screen-results" class="screen">
+            <div class="header">
+                <h2 data-i18n="screens.results.title">Résultats</h2>
+            </div>
+            <div class="content">
+                <div id="resultsInfo" class="info-box"></div>
+                <button class="btn-primary" onclick="goToGoogleBusiness()" data-i18n="screens.results.buttons.continueGoogle">
+                    Continuer avec Google Business
+                </button>
+                <button class="btn-secondary" onclick="goToScreen('screen-home')" data-i18n="screens.results.buttons.newScraping">
+                    Nouveau scraping
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran 5b: Google Business -->
+        <div id="screen-google-business" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-results')">← <span data-i18n="screens.google.buttons.back">Retour</span></button>
+                <h2>🗺️ Google Business</h2>
+            </div>
+            <div class="content">
+                <div class="info-box">
+                    <h3>Rechercher les fiches Google Business</h3>
+                    <p>Nous allons rechercher toutes les fiches Google Business qui utilisent le même site web.</p>
+                    <div class="form-group">
+                        <label>Localisation (optionnel)</label>
+                        <input type="text" id="googleLocationInput" placeholder="Ex: Lausanne, Suisse">
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="searchGoogleBusinesses()">
+                    🔍 Rechercher les fiches
+                </button>
+                <div id="googleSearchStatus" class="status-message" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Écran 5c: Résultats Google Business -->
+        <div id="screen-google-results" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-google-business')">← Retour</button>
+                <h2>📍 Fiches trouvées</h2>
+            </div>
+            <div class="content">
+                <div id="googleResultsList" class="google-results-list"></div>
+                <div class="google-actions">
+                    <button class="btn-secondary" onclick="selectAllGoogleBusinesses()">✓ Tout sélectionner</button>
+                    <button class="btn-primary" onclick="downloadGoogleBusinesses()">
+                        📥 Télécharger les fiches sélectionnées
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran 5d: Téléchargement Google Business -->
+        <div id="screen-google-download" class="screen">
+            <div class="header">
+                <h2>📥 Téléchargement Google Business</h2>
+            </div>
+            <div class="content">
+                <div class="progress-container">
+                    <canvas id="googleProgressCanvas" width="200" height="200"></canvas>
+                    <div class="progress-text">
+                        <span id="googleProgressPercent">0%</span>
+                    </div>
+                </div>
+                <div id="googleLogs" class="logs-container"></div>
+            </div>
+        </div>
+
+        <!-- Écran 5e: Résultats finaux Google Business -->
+        <div id="screen-google-final" class="screen">
+            <div class="header">
+                <h2>✅ Téléchargement terminé</h2>
+            </div>
+            <div class="content">
+                <div id="googleFinalResults" class="info-box"></div>
+                <button class="btn-primary" onclick="goToCatchmentAreaAnalysis()">
+                    ➡️ Suivant
+                </button>
+                <button class="btn-secondary" onclick="downloadAllResults()">
+                    📦 Télécharger tout
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran Zone de chalandise -->
+        <div id="screen-catchment-area" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-google-final')">← Retour</button>
+                <h2>📍 Zone de chalandise</h2>
+            </div>
+            <div class="content">
+                <div class="info-box">
+                    <h3 id="catchmentLocationTitle">Analyse pour [Localité]</h3>
+                    <p>Définissez le rayon de votre zone de chalandise</p>
+                </div>
+                
+                <div class="catchment-controls">
+                    <label for="radiusSlider">Rayon: <span id="radiusValue">10</span> km</label>
+                    <input type="range" id="radiusSlider" min="1" max="100" value="10" oninput="updateRadius(this.value)">
+                </div>
+                
+                <div class="catchment-stats">
+                    <div class="stat-box">
+                        <h4>Population totale dans la zone</h4>
+                        <p id="totalPopulation" class="stat-value">0</p>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <h4>Les 6 plus grandes communes</h4>
+                        <div id="topCommunes" class="communes-list"></div>
+                    </div>
+                </div>
+                
+                <button class="btn-primary" onclick="nextCatchmentArea()">
+                    Suivant
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran 6: Liste des fiches -->
+        <div id="screen-fiches" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-info')">← <span data-i18n="screens.fiches.buttons.back">Retour</span></button>
+                <h2 data-i18n="screens.fiches.title">Fiches trouvées</h2>
+            </div>
+            <div class="content">
+                <div id="fichesList" class="fiches-list"></div>
+                <button class="btn-primary" onclick="extractFichesDetails()" data-i18n="screens.fiches.buttons.extract">
+                    Extraire les détails
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran 7: Détails des fiches -->
+        <div id="screen-fiche-details" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-fiches')">← <span data-i18n="screens.ficheDetails.buttons.back">Retour</span></button>
+                <h2 data-i18n="screens.ficheDetails.title">Détails des fiches</h2>
+            </div>
+            <div class="content">
+                <div id="fichesDetails" class="fiches-details"></div>
+                <button class="btn-primary" onclick="enrichWithAI()" data-i18n="screens.ficheDetails.buttons.enrichWithAI">
+                    Enrichir avec l'IA
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran 8: Enrichissement IA -->
+        <div id="screen-enrichment" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-fiche-details')">← <span data-i18n="screens.enrichment.buttons.back">Retour</span></button>
+                <h2 data-i18n="screens.enrichment.title">Enrichissement IA</h2>
+            </div>
+            <div class="content">
+                <div id="enrichmentResults" class="enrichment-results"></div>
+                <button class="btn-primary" onclick="goToPlanAction()" data-i18n="screens.enrichment.buttons.createActionPlan">
+                    Créer un plan d'action
+                </button>
+            </div>
+        </div>
+
+        <!-- Écran 9: Plan d'action -->
+        <div id="screen-plan" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-enrichment')">← <span data-i18n="screens.actionPlan.buttons.back">Retour</span></button>
+                <h2 data-i18n="screens.actionPlan.title">Plan d'action marketing</h2>
+            </div>
+            <div class="content">
+                <div class="form-group">
+                    <label data-i18n="screens.actionPlan.form.monthlyBudget">Budget mensuel (€)</label>
+                    <input type="number" id="budgetInput" value="1000">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="screens.actionPlan.form.start">Début</label>
+                    <input type="month" id="startMonthInput" value="2025-01">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="screens.actionPlan.form.end">Fin</label>
+                    <input type="month" id="endMonthInput" value="2025-12">
+                </div>
+                <button class="btn-primary" onclick="generatePlan()" data-i18n="screens.actionPlan.buttons.generate">
+                    Générer le plan
+                </button>
+                <div id="planResults" class="plan-results"></div>
+            </div>
+        </div>
+
+        <!-- Écran Portrait Client -->
+        <div id="screen-client-portrait" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-catchment-area')">← Retour</button>
+                <h2>Portrait Client Intelligent</h2>
+            </div>
+            <div class="content">
+                <div class="portrait-intro">
+                    <h3>Analyse complète avec Gemini AI</h3>
+                    <p>L'intelligence artificielle va analyser toutes les données collectées pour créer un portrait détaillé de l'entreprise.</p>
+                    
+                    <div class="portrait-info">
+                        <h4>Informations qui seront extraites :</h4>
+                        <ul class="portrait-fields-list">
+                            <li>Raison sociale et informations légales</li>
+                            <li>Année de fondation et historique</li>
+                            <li>Nombre d'employés et apprentis</li>
+                            <li>Certifications et diplômes</li>
+                            <li>🎯 Type de clientèle (B2B, B2C ou mixte)</li>
+                            <li>👥 Segments de clientèle par type</li>
+                            <li>📑 Services spécifiques par cible</li>
+                            <li>💬 Analyse critique des services</li>
+                            <li>📋 Nombre d'avis et note par fiche Google</li>
+                            <li>🗺️ Zone(s) de chalandise et population</li>
+                            <li>🏙️ Top 6 communes par zone</li>
+                            <li>Services principaux (jusqu'à 6)</li>
+                            <li>Valeurs de l'entreprise</li>
+                            <li>Textes de présentation générés</li>
+                        </ul>
+                    </div>
+                    
+                    <button id="startPortraitBtn" class="btn-primary" onclick="startPortraitAnalysis()">
+                        🤖 Démarrer l'analyse AI
+                    </button>
+                </div>
+                
+                <!-- Progression -->
+                <div id="portraitProgressContainer" class="progress-container" style="display: none;">
+                    <canvas id="portraitProgressCanvas" width="200" height="200"></canvas>
+                    <div class="progress-text">
+                        <span id="portraitProgressPercent">0%</span>
+                    </div>
+                    <p id="portraitStatus" class="status-message">Préparation de l'analyse...</p>
+                </div>
+                
+                <!-- Résultats -->
+                <div id="portraitResults" class="portrait-results" style="display: none;">
+                    <h3>Portrait Client Complété</h3>
+                    <div id="portraitContent" class="portrait-content">
+                        <!-- Les résultats seront affichés ici -->
+                    </div>
+                    
+                    <div class="portrait-actions">
+                        <button class="btn-secondary" onclick="downloadPortrait()">
+                            📥 Télécharger JSON
+                        </button>
+                        <button class="btn-primary" onclick="startKeywordResearch()">
+                            ➡️ Suivant
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran Recherche de mots-clés -->
+        <div id="screen-keyword-research" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="goToScreen('screen-client-portrait')">← Retour</button>
+                <h2>🔍 Recherche de Mots-clés Google Ads</h2>
+            </div>
+            <div class="content">
+                <div id="keywordPreparation" class="info-box">
+                    <p>Préparation de la recherche de mots-clés...</p>
+                </div>
+                
+                <button id="launchKeywordBtn" class="btn-primary" onclick="launchKeywordResearch()" style="display: none;">
+                    🚀 Lancer la recherche
+                </button>
+                
+                <!-- Progression -->
+                <div id="keywordProgressContainer" class="progress-container" style="display: none;">
+                    <canvas id="keywordProgressCanvas" width="200" height="200"></canvas>
+                    <div class="progress-text">
+                        <span id="keywordProgressPercent">0%</span>
+                    </div>
+                    <p id="keywordStatus" class="status-message">Recherche en cours...</p>
+                </div>
+                
+                <!-- Résultats -->
+                <div id="keywordResults" class="keyword-results" style="display: none;">
+                    <!-- Les résultats seront affichés ici -->
+                </div>
+                
+                <div class="keyword-actions" style="display: none;">
+                    <button class="btn-secondary" onclick="downloadKeywordResults()">
+                        📥 Télécharger CSV
+                    </button>
+                    <button class="btn-primary" onclick="goToNextFromKeywords()">
+                        ➡️ Suivant
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Écran Optimisation IA des mots-clés -->
+        <div id="screen-ai-optimization" class="screen">
+            <div class="header">
+                <button class="btn-back" onclick="backToKeywordResults()">← Retour</button>
+                <h2>🤖 Optimisation IA des Mots-clés</h2>
+            </div>
+            <div class="content">
+                <!-- Progression -->
+                <div id="ai-optimization-progress" class="ai-progress-container">
+                    <div class="progress-bar-container">
+                        <div id="ai-progress-bar" class="progress-bar"></div>
+                        <span id="ai-progress-text" class="progress-text">0%</span>
+                    </div>
+                    <p id="ai-progress-message" class="progress-message">Initialisation...</p>
+                </div>
+                
+                <!-- Résultats -->
+                <div id="ai-optimization-results" class="ai-results-container">
+                    <!-- Les résultats seront affichés ici -->
+                </div>
+                
+                <!-- Actions -->
+                <div id="ai-results-actions" class="ai-actions" style="display: none;">
+                    <button class="btn-secondary" onclick="downloadAIResults()">
+                        📥 Télécharger l'analyse
+                    </button>
+                    <button class="btn-primary" onclick="backToKeywordResults()">
+                        → Retour aux résultats
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="translations.js"></script>
+    <script src="script.js"></script>
+    <script src="google-business.js"></script>
+    <script src="catchment-area.js"></script>
+    <script src="client-portrait.js"></script>
+    <script src="keyword-research.js"></script>
+    <script src="ai-optimization.js"></script>
+    <link rel="stylesheet" href="ai-optimization-styles.css">
+</body>
+</html>

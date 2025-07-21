@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Scrapi Socket.io</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .log {
+            background: #f0f0f0;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .success { background: #d4edda; }
+        .error { background: #f8d7da; }
+        .info { background: #d1ecf1; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        #progressBar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        #progressFill {
+            height: 100%;
+            background: #007bff;
+            width: 0%;
+            transition: width 0.3s;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Scrapi - Socket.io & Traductions</h1>
+    
+    <h2>1. Test API</h2>
+    <button onclick="testAPI()">Tester l'API</button>
+    <button onclick="testTranslations()">Tester les traductions</button>
+    
+    <h2>2. Test Socket.io</h2>
+    <p>Socket ID: <span id="socketId">Non connecté</span></p>
+    <button onclick="testSocketConnection()">Tester la connexion</button>
+    <button onclick="testAnalyze()">Tester l'analyse avec progression</button>
+    
+    <div id="progressBar">
+        <div id="progressFill"></div>
+    </div>
+    <p>Progression: <span id="progressText">0%</span></p>
+    
+    <h2>3. Logs</h2>
+    <div id="logs"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const logs = document.getElementById('logs');
+        
+        function addLog(message, type = 'info') {
+            const log = document.createElement('div');
+            log.className = `log ${type}`;
+            log.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logs.insertBefore(log, logs.firstChild);
+        }
+        
+        // Socket.io events
+        socket.on('connect', () => {
+            document.getElementById('socketId').textContent = socket.id;
+            addLog(`Connecté avec ID: ${socket.id}`, 'success');
+        });
+        
+        socket.on('disconnect', () => {
+            document.getElementById('socketId').textContent = 'Déconnecté';
+            addLog('Déconnecté du serveur', 'error');
+        });
+        
+        socket.on('test-connection', (data) => {
+            addLog(`Test connexion reçu: ${JSON.stringify(data)}`, 'success');
+        });
+        
+        socket.on('analyze-start', (data) => {
+            addLog('Analyse démarrée', 'info');
+            updateProgress(0);
+        });
+        
+        socket.on('analyze-progress', (data) => {
+            addLog(`Progression: ${data.progress}% (${data.visited}/${data.total})`, 'info');
+            updateProgress(data.progress);
+        });
+        
+        socket.on('analyze-complete', (data) => {
+            addLog(`Analyse terminée: ${data.pages} pages trouvées`, 'success');
+            updateProgress(100);
+        });
+        
+        socket.on('analyze-error', (data) => {
+            addLog(`Erreur analyse: ${data.error}`, 'error');
+        });
+        
+        function updateProgress(percent) {
+            document.getElementById('progressFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = percent + '%';
+        }
+        
+        // Test functions
+        async function testAPI() {
+            try {
+                const response = await fetch('/test');
+                const data = await response.json();
+                addLog(`API Test: ${JSON.stringify(data)}`, 'success');
+            } catch (error) {
+                addLog(`Erreur API: ${error.message}`, 'error');
+            }
+        }
+        
+        async function testTranslations() {
+            try {
+                const response = await fetch('/api/translations/fr');
+                if (response.ok) {
+                    const data = await response.json();
+                    addLog(`Traductions chargées: ${Object.keys(data).length} clés principales`, 'success');
+                } else {
+                    const error = await response.json();
+                    addLog(`Erreur traductions: ${JSON.stringify(error)}`, 'error');
+                }
+            } catch (error) {
+                addLog(`Erreur fetch traductions: ${error.message}`, 'error');
+            }
+        }
+        
+        function testSocketConnection() {
+            socket.emit('test-connection', { test: true });
+            addLog('Test de connexion envoyé', 'info');
+        }
+        
+        function testAnalyze() {
+            addLog('Démarrage du test d\'analyse', 'info');
+            socket.emit('test-analyze', { url: 'https://example.com' });
+        }
+        
+        // Test réel d'analyse
+        async function testRealAnalyze() {
+            try {
+                const response = await fetch('/info', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        url: 'https://example.com',
+                        socketId: socket.id
+                    })
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    addLog(`Analyse réelle terminée: ${data.pages} pages`, 'success');
+                } else {
+                    addLog(`Erreur analyse réelle: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                addLog(`Erreur: ${error.message}`, 'error');
+            }
+        }
+    </script>
+</body>
+</html>
